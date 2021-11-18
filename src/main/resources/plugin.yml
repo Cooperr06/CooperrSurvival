@@ -4,3 +4,9 @@ main: de.cooperr.cooperrsurvival.CooperrSurvival
 api-version: 1.17
 prefix: CooperrrSurvival
 authors: [ Cooperr06 ]
+
+commands:
+  tpa:
+    description: Sends a teleport request to a player
+    usage: /tpa <Player>
+    permission: cooperrsurvival.command.tpa
