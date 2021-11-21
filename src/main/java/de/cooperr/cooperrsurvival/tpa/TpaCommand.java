@@ -117,6 +117,9 @@ public class TpaCommand implements TabExecutor {
             plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> tabCompletion.add(onlinePlayer.getName()));
             tabCompletion.removeIf(s -> !s.startsWith(args[0]));
 
+            Collections.sort(tabCompletion);
+            return tabCompletion;
+
         } else if (args.length == 2) {
 
             for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
@@ -128,6 +131,7 @@ public class TpaCommand implements TabExecutor {
             plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> tabCompletion.add(onlinePlayer.getName()));
             tabCompletion.removeIf(s -> !s.startsWith(args[0]));
 
+            Collections.sort(tabCompletion);
             return tabCompletion;
         }
         return null;

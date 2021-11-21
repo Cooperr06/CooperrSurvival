@@ -1,0 +1,6 @@
+players:
+  Cooperr06:
+    money: 0
+    permissions:
+      - minecraft.command.*
+      - bukkit.command.*

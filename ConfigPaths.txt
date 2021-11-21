@@ -1,0 +1,10 @@
+players.yml
+
+players.<Player>.money
+players.<Player>.position
+players.<Player>.clan
+players.<Player>.permissions
+
+settings.yml
+
+server.maintenance

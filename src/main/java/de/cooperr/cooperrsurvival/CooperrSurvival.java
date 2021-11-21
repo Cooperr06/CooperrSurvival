@@ -1,5 +1,10 @@
 package de.cooperr.cooperrsurvival;
 
+import de.cooperr.cooperrsurvival.customenchantment.Bleeding;
+import de.cooperr.cooperrsurvival.customenchantment.Nausea;
+import de.cooperr.cooperrsurvival.maintenance.MaintenanceCommand;
+import de.cooperr.cooperrsurvival.message.PlayerJoinListener;
+import de.cooperr.cooperrsurvival.message.PlayerQuitListener;
 import de.cooperr.cooperrsurvival.tpa.TpaCommand;
 import de.cooperr.cooperrsurvival.util.Config;
 import lombok.Getter;
@@ -8,7 +13,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +28,7 @@ public final class CooperrSurvival extends JavaPlugin {
     public void onEnable() {
         listenerRegistration();
         commandRegistration();
+        enchantmentRegistration();
 
         settingsConfig = new Config(this, "settings.yml");
         playerConfig = new Config(this, "players.yml");
@@ -35,10 +40,17 @@ public final class CooperrSurvival extends JavaPlugin {
 
     private void commandRegistration() {
         new TpaCommand(this);
+        new MaintenanceCommand(this);
     }
 
     private void listenerRegistration() {
+        new PlayerJoinListener(this);
+        new PlayerQuitListener(this);
+    }
 
+    private void enchantmentRegistration() {
+        new Bleeding(this);
+        new Nausea(this);
     }
 
     public void registerCommand(CommandExecutor executor, String name) {
