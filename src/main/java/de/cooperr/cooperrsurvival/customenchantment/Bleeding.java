@@ -19,8 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Set;
 
 @Getter
@@ -28,7 +27,7 @@ public class Bleeding extends Enchantment implements Listener {
 
     private final CooperrSurvival plugin;
     private final NamespacedKey namespacedKey;
-    private final List<Entity> bleedingEntities = new ArrayList<>();
+    private static final HashMap<Entity, Integer> BLEEDING_ENTITIES = new HashMap<>();
     private int taskId;
 
     public Bleeding(CooperrSurvival plugin) {
@@ -37,6 +36,7 @@ public class Bleeding extends Enchantment implements Listener {
         this.plugin = plugin;
         this.namespacedKey = new NamespacedKey(plugin, "bleeding");
 
+        plugin.registerListener(this);
         Enchantment.registerEnchantment(this);
     }
 
@@ -45,7 +45,7 @@ public class Bleeding extends Enchantment implements Listener {
         Entity entity = event.getEntity();
         Entity entityDamager = event.getDamager();
 
-        if (!(entity instanceof Damageable) || bleedingEntities.contains(entity) || !(entityDamager instanceof Player)) {
+        if (!(entity instanceof Damageable) || BLEEDING_ENTITIES.containsKey(entity) || !(entityDamager instanceof Player)) {
             return;
         }
 
@@ -55,19 +55,19 @@ public class Bleeding extends Enchantment implements Listener {
             return;
         }
 
-        bleedingEntities.add(entity);
+        BLEEDING_ENTITIES.put(entity, 0);
         int level = damager.getInventory().getItemInMainHand().getEnchantmentLevel(this);
-        int[] current = {0};
 
         taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 
-            if (current[0] == level * 2) {
-                bleedingEntities.remove(entity);
+            if (BLEEDING_ENTITIES.get(entity) == level * 3) {
+                BLEEDING_ENTITIES.remove(entity);
                 plugin.getServer().getScheduler().cancelTask(taskId);
+                return;
             }
 
             ((Damageable) entity).damage(0.5, damager);
-            current[0]++;
+            BLEEDING_ENTITIES.put(entity, BLEEDING_ENTITIES.get(entity) + 1);
         }, 20, 20);
     }
 

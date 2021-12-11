@@ -5,14 +5,22 @@ import io.papermc.paper.enchantments.EnchantmentRarity;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityCategory;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -29,7 +37,29 @@ public class Nausea extends Enchantment implements Listener {
         this.plugin = plugin;
         this.namespacedKey = new NamespacedKey(plugin, "nausea");
 
+        plugin.registerListener(this);
         Enchantment.registerEnchantment(this);
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        Entity entity = event.getEntity();
+        Entity entityDamager = event.getDamager();
+
+        if (!(entityDamager instanceof Player) || !(entity instanceof Player)) {
+            return;
+        }
+
+        Player victim = (Player) entity;
+        Player damager = (Player) entityDamager;
+
+        if (!damager.getInventory().getItemInMainHand().containsEnchantment(this)) {
+            return;
+        }
+
+        int level = damager.getInventory().getItemInMainHand().getEnchantmentLevel(this);
+
+        victim.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, level * 4 * 20, 1));
     }
 
     @Override

@@ -46,10 +46,10 @@ public class TpaCommand implements TabExecutor {
 
                 target.sendMessage(player.displayName()
                         .append(Component.text(" sends you a teleport request!\n"))
-                        .append(Component.text("[Accept]\t\t\t", NamedTextColor.DARK_GREEN, TextDecoration.BOLD)
-                                .clickEvent(ClickEvent.runCommand("tpa accept " + target.getName())))
+                        .append(Component.text("[Accept]            ", NamedTextColor.DARK_GREEN, TextDecoration.BOLD)
+                                .clickEvent(ClickEvent.runCommand("/tpa accept " + target.getName())))
                         .append(Component.text("[Deny]", NamedTextColor.DARK_RED, TextDecoration.BOLD)
-                                .clickEvent(ClickEvent.runCommand("tpa deny " + target.getName()))));
+                                .clickEvent(ClickEvent.runCommand("/tpa deny " + target.getName()))));
                 return true;
             }
 

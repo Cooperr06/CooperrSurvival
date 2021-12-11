@@ -10,3 +10,7 @@ commands:
     description: Sends a teleport request to a player
     usage: /tpa <Player>
     permission: cooperrsurvival.command.tpa
+  maintenance:
+    description: Manages the server's current maintenance state
+    usage: /maintenance <Action>
+    permission: cooperrsurvival.command.maintenance

@@ -27,7 +27,7 @@ public class Config extends YamlConfiguration {
 
         if (!file.exists()) {
             try {
-                Files.copy(Paths.get("./resources/" + fileName.substring(0, fileName.length() - 5) + "ConfigTemplate.yml"), new FileOutputStream(file));
+                Files.copy(Paths.get("./src/main/resources/" + fileName.substring(0, fileName.length() - 5) + "ConfigTemplate.yml"), new FileOutputStream(file));
             } catch (IOException e) {
                 e.printStackTrace();
             }
